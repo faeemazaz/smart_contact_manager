@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="user/base::layout(~{::section})">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+		<div class="container-fluid">
+			<div th:if="${session.message}" th:classappend="${session.message.type}" class="alert text-center" role="alert">
+				<p th:text="${session.message.content}"></p>
+				<th:block th:text="${#session.removeAttribute('message')}"></th:block>
+			</div>
+			<div class="contact-form">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+						<h2 th:text="${update} ? 'Update Contact' : 'Add Contact'"class="form-title"></h2>
+					</div>
+				</div>
+	
+				<div class="row">
+	
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						
+						<form class="form" th:action="@{/user/contact}" th:object="${contactentity}" enctype="multipart/form-data"  method="POST">
+							<input th:field="*{cId}" type="hidden"/>
+							<div class="form-group">
+								<label class="form-label" id="nameLabel" for="name"></label> 
+								<input type="text"
+									   th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}" 
+									   class="form-control"
+									   name="name"
+									   th:value="${contactentity.name}"
+									   placeholder="Enter name here" 
+									   tabindex="1" />
+								<div th:each="e: ${#fields.errors('name')}" th:text="${e}" class="text-danger">
+					      
+					    		</div>
+							</div>
+	
+							<div class="form-group">
+								<label class="form-label" id="nickname" for="secondName"></label> 
+								<input type="text"
+									   class="form-control"
+									   th:classappend="${#fields.hasErrors('secondName') ? 'is-invalid' : ''}" 
+									   name="secondName"
+									   th:value="${contactentity.secondName}"
+									   placeholder="Enter second name here" 
+									   tabindex="2">
+								<div th:each="e: ${#fields.errors('secondName')}" th:text="${e}" class="text-danger">
+					      
+					    		</div>
+							</div>
+	
+							<div class="form-group">
+								<label class="form-label" id="subjectLabel" for="work"></label>
+								<input type="text" 
+									   class="form-control"
+									   th:classappend="${#fields.hasErrors('work') ? 'is-invalid' : ''}" 
+									   name="work" 
+									   th:value="${contactentity.work}"
+									   placeholder="Enter work here" 
+									   tabindex="3">
+								<div th:each="e: ${#fields.errors('work')}" th:text="${e}" class="text-danger">
+					      
+					    		</div>
+							</div>
+	
+							<div class="form-group">
+								<label class="form-label" id="email" for="email"></label>
+								<input type="email" 
+									   name="email" 
+									   class="form-control"
+									   th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}" 
+									   th:value="${contactentity.email}"
+									   placeholder="Enter email here" 
+									   tabindex="4" />
+								<div th:each="e: ${#fields.errors('email')}" th:text="${e}" class="text-danger">
+					      
+					    		</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="form-label" id="phone" for="phone"></label>
+								<input type="number" 
+									   name="phone" 
+									   class="form-control" 
+									   th:classappend="${#fields.hasErrors('phone') ? 'is-invalid' : ''}" 
+									   th:value="${contactentity.phone}"
+									   placeholder="Enter phone number here" 
+									   tabindex="4" />
+								<div th:each="e: ${#fields.errors('phone')}" th:text="${e}" class="text-danger">
+					      
+					    		</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="form-label" id="description" for="description"></label>
+								<textarea rows="6" cols="60" name="description" th:text="${contactentity.description}" class="form-control" id="mytextarea" placeholder="Enter description here" tabindex="4"></textarea>
+							</div>
+						
+							<div class="form-group text-center">
+								<label class="form-label" id="image" for="image"></label>
+								<img alt="profile_img" class="contact-profile my-3" th:src="@{'/img/' + ${contactentity.image}}">
+								<input type="file" name="profileImage" class="form-control" id="profileImage" th:value="${contactentity.image}">
+							</div>
+	
+							<div class="text-center margin-top-25">
+								<button th:text="${update} ? 'Update Contact' : 'Add Contact'" type="submit" class="btn btn-mod btn-border btn-large"></button>
+							</div>
+	
+						</form>
+						<!-- End form -->
+	
+					</div>
+					<!-- End col -->
+	
+				</div>
+				<!-- End row -->
+
+			</div>
+		</div>
+		<!-- End container -->
+		<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+		<script>
+	      tinymce.init({
+	        selector: '#mytextarea'
+	      });
+	    </script>
+	</section>
+</body>
+</html>

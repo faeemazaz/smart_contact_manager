@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="user/base::layout(~{::section})">
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Insert title here</title>
+</head>
+<body>
+	<section>
+		<div class="container-fluid">
+			<div class="contact-form">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+						<h2 class="form-title">Contacts</h2>
+					</div>
+				</div>
+	
+				<div class="row">
+	
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	
+						<table class="table table-hover">
+						  <thead>
+						    <tr>
+						      <th scope="col">Id</th>
+						      <th scope="col">Name</th>
+						      <th scope="col">Email</th>
+						      <th scope="col">Phone</th>
+						      <th scope="col">Action</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <tr th:each="c: ${contacts}">
+						      <th scope="row" th:text="${'SCMID' + c.cId}"></th>
+						      <td>
+						      	<img alt="profile_img" class="profile-image" th:src="@{'/img/'+${c.image}}">
+						      	<span th:text="${c.name}"></span>
+						      </td>
+						      <td>
+						      	<a th:href="@{/user/contact/{cId}(cId = ${c.cId})}">
+						      		<span th:text="${c.email}"></span>
+						      	</a>
+						      </td>
+						      <td th:text="${c.phone}"></td>
+						      <td>
+						      	<a th:onclick="'deleteContact(' + ${c.cId} + ')'" class="btn btn-danger btn-sm">Delete</a>
+						      	<a th:href="@{/user/contact/update/{id}(id = ${c.cId})}" class="btn btn-primary btn-sm">Edit</a>
+						      </td>
+						    </tr>
+						</tbody>
+						</table>
+						<!-- End table -->
+						
+						<nav aria-label="..." th:if="${totalPage > 1}">
+						  <ul class="pagination">
+						    <li class="page-item">
+						     	<a class="page-link" th:if="${currentPage != 0}" th:href="@{/user/view-contact/{page}(page = ${currentPage - 1})}" tabindex="-1" aria-disabled="true">Previous</a>
+						    </li>
+						    <li class="page-item" th:classappend="${currentPage == noOfPage - 1} ? 'active' : ''" th:each="noOfPage: ${#numbers.sequence(1, totalPage)}">
+						    	<a class="page-link" th:href="@{/user/view-contact/{page}(page = ${noOfPage - 1})}">
+						    		<span th:text="${noOfPage}"></span>
+						    	</a>
+						    </li>
+						    <li class="page-item">
+						      	<a class="page-link" th:if="${currentPage != totalPage - 1}" th:href="@{/user/view-contact/{page}(page = ${currentPage + 1})}">Next</a>
+						    </li>
+						  </ul>
+						</nav>
+	
+					</div>
+					<!-- End col -->
+	
+				</div>
+				<!-- End row -->
+
+			</div>
+		</div>
+		<!-- End container -->
+		<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
+		<script>
+	      tinymce.init({
+	        selector: '#mytextarea'
+	      });
+	    </script>
+	</section>
+</body>
+</html>
